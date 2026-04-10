@@ -1,9 +1,7 @@
-provider "aws" {
-  region  = "us-east-1"
-  profile = "acloud"
-}
-
-
+# provider "aws" {
+#   region  = "us-east-1"
+#   profile = "acloud"
+# }
 
 resource "aws_launch_template" "example" {
   image_id               = "ami-01b14b7ad41e17ba4"
@@ -23,7 +21,7 @@ resource "aws_launch_template" "example" {
 }
 
 resource "aws_iam_role" "ssm_role" {
-  name = "ec2-ssm-role"
+  name = "${var.cluster_name}-ec2-ssm-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
@@ -40,7 +38,7 @@ resource "aws_iam_role_policy_attachment" "ssm_core" {
 }
 
 resource "aws_iam_instance_profile" "ssm_profile" {
-  name = "ec2-ssm-profile"
+  name = "${var.cluster_name}-ec2-ssm-profile"
   role = aws_iam_role.ssm_role.name
 }
 
@@ -128,7 +126,7 @@ resource "aws_security_group_rule" "allow_all_inbound" {
 }
 
 resource "aws_lb_target_group" "asg" {
-  name     = "terraform-tg-example"
+  name     = "${var.cluster_name}-terraform-tg-example"
   port     = var.server_port
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id

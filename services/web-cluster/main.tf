@@ -43,6 +43,7 @@ resource "aws_iam_instance_profile" "ssm_profile" {
 }
 
 resource "aws_autoscaling_group" "example" {
+  name_prefix         = "${var.cluster_name}-asg"
   vpc_zone_identifier = data.aws_subnets.default.ids
   min_size            = var.min_size
   max_size            = var.max_size

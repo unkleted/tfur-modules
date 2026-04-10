@@ -56,6 +56,9 @@ resource "aws_autoscaling_group" "example" {
   }
   instance_refresh {
     strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 100
+    }
   }
   tag {
     key                 = "Name"

@@ -126,7 +126,7 @@ resource "aws_security_group_rule" "allow_all_inbound" {
 }
 
 resource "aws_lb_target_group" "asg" {
-  name     = "${var.cluster_name}-terraform-tg-example"
+  name     = "${var.cluster_name}-tg"
   port     = var.server_port
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id

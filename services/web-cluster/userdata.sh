@@ -25,7 +25,7 @@ cat << EOF > /var/www/html/index.html
   </head>
   <body>
     <h1>Hello, World</h1>
-    <p>It works!</p>
+    <p>It works so good!</p>
     <p>DB address: ${db_address}</p>
     <p>DB port: ${db_port}</p>
   </body>

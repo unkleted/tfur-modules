@@ -18,6 +18,12 @@ resource "aws_launch_template" "example" {
   iam_instance_profile {
     name = aws_iam_instance_profile.ssm_profile.name
   }
+
+  block_device_mappings {
+    ebs {
+      encrypted = true
+    }
+  }
 }
 
 resource "aws_iam_role" "ssm_role" {

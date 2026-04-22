@@ -13,6 +13,11 @@ variable "db_remote_state_key" {
   type        = string
 }
 
+variable "enable_autoscaling" {
+  description = "If true, enable auto scaling"
+  type = bool
+}
+
 variable "instance_type" {
   description = "The type of EC2 Instances to run"
   type        = string

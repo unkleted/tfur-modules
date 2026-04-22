@@ -15,7 +15,7 @@ variable "db_remote_state_key" {
 
 variable "enable_autoscaling" {
   description = "If true, enable auto scaling"
-  type = bool
+  type        = bool
 }
 
 variable "instance_type" {

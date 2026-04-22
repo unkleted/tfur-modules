@@ -22,7 +22,7 @@ resource "aws_launch_template" "example" {
   block_device_mappings {
     device_name = "/dev/xvda"
     ebs {
-      encrypted = true
+      encrypted   = true
       volume_size = 8
     }
   }

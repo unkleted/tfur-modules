@@ -4,7 +4,9 @@
 # }
 
 resource "aws_launch_template" "example" {
-  image_id               = "ami-01b14b7ad41e17ba4"
+  # image_id               = "ami-01b14b7ad41e17ba4"
+  # image_id               = data.aws_ami.al2023.image_id
+  image_id               = "resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
   instance_type          = var.instance_type
   name_prefix            = "lt-example"
   update_default_version = true
@@ -193,12 +195,33 @@ data "aws_vpc" "default" {
   default = true
 }
 
+data "aws_ec2_instance_type_offerings" "available" {
+  filter {
+    name   = "instance-type"
+    values = [var.instance_type]
+  }
+
+  location_type = "availability-zone"
+}
+
 data "aws_subnets" "default" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   }
+
+  filter {
+    name   = "availability-zone"
+    values = data.aws_ec2_instance_type_offerings.available.locations
+  }
 }
+
+# data "aws_subnets" "default" {
+#   filter {
+#     name   = "vpc-id"
+#     values = [data.aws_vpc.default.id]
+#   }
+# }
 
 data "terraform_remote_state" "db" {
   backend = "s3"
@@ -208,6 +231,24 @@ data "terraform_remote_state" "db" {
     region  = "us-east-1"
     profile = "acloud"
   }
+}
+
+data "aws_ami" "al2023" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023.*-x86_64"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
 }
 
 locals {
